@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <title>Portal</title>
+    <style>
+        body {
+            background-color: {% if tema == 'escuro' %}#222{% else %}#fff{% endif %};
+            color: {% if tema == 'escuro' %}#eee{% else %}#000{% endif %};
+            font-family: Arial, sans-serif;
+        }
+        a {
+            color: {% if tema == 'escuro' %}#9cf{% else %}#06c{% endif %};
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <p>Olá, {{ usuario }}! Bem-vindo ao portal.</p>
+    <p>Você acessou esta página {{ contador }} vezes nesta sessão.</p>
+
+    <form method="post">
+        <label for="categoria">Escolha a categoria de notícias:</label>
+        <select name="categoria" id="categoria" onchange="this.form.submit()">
+            <option value="Esportes" {% if categoria == 'Esportes' %}selected{% endif %}>Esportes</option>
+            <option value="Entretenimento" {% if categoria == 'Entretenimento' %}selected{% endif %}>Entretenimento</option>
+            <option value="Lazer" {% if categoria == 'Lazer' %}selected{% endif %}>Lazer</option>
+        </select>
+
+        <label for="tema" style="margin-left:20px;">Tema:</label>
+        <select name="tema" id="tema" onchange="this.form.submit()">
+            <option value="claro" {% if tema == 'claro' %}selected{% endif %}>Claro</option>
+            <option value="escuro" {% if tema == 'escuro' %}selected{% endif %}>Escuro</option>
+        </select>
+    </form>
+
+    <h2>Notícias - {{ categoria }}</h2>
+    <ul>
+        {% for noticia in noticias %}
+            <li><a href="{{ url_for('noticia', noticia_id=noticia.id) }}">{{ noticia.titulo }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <p><a href="{{ url_for('logout') }}">Logout</a></p>
+</body>
+</html>
